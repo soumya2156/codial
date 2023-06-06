@@ -7,6 +7,12 @@ console.log('router loaded SUCCESSFULLY!!');
 
 router.get('/' , homeController.home);
 router.use('/users' , require('./users'));
+router.use('/posts' , require('./posts'));
+router.use('/comments' , require('./comments'));
+
+
+
+
 router.use('/demo' , require('./demo'));
 // router.get('/demo1' , demoController.demo);
 

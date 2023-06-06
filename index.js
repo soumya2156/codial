@@ -11,6 +11,9 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const MongoStore = require('connect-mongo'); 
+const flash = require('connect-flash');
+const customMware = require('./config/middleware');
+
 // const sassMiddleware = require('node-sass');
 
 // app.use(sassMiddleware({
@@ -36,6 +39,11 @@ app.use(expressLayouts);
 app.set('view engine' , 'ejs');
 app.set('views' , './views');
 
+app.use(express.static('./assets'));
+
+// make the uploads path avalable to the browser
+app.use('/uploads' , express.static(__dirname + '/uploads'));
+
 //mongo store is used to store session cookie
 app.use(session({
     name: 'codial',
@@ -57,9 +65,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
-
+app.use(flash());
+app.use(customMware.setFlash);
 //use express router
-app.use('/', require('./routes/index'));
+app.use('/', require('./routes'));
 
 app.listen(port , function(err){
     if(err){
